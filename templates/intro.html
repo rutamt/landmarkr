@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Intro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
+    <script src="{{ url_for('static', filename='js/intro.js')}}" defer></script>
+</head>
+
+<body>
+    <h1>Welcome to the Game</h1>
+    <p>Please enter the number of rounds:</p>
+    <form id="intro-form">
+        <input type="number" name="rounds" id="rounds-input" min="1" required>
+        <button type="submit">Start Game</button>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+
+</html>

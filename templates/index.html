@@ -3,122 +3,30 @@
 
 <head>
     <title>Landmarkr</title>
-    <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
-
-        #submit-btn {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            z-index: 999;
-            display: none;
-            background-color: #333;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        #landmark-info {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 999;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            font-size: 18px;
-            display: none;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-
-</head>
-
-<body>
-    <div id="map"></div>
-    <button id="submit-btn" onclick="submitLocation()" disabled>Submit</button>
-    <div id="landmark-info"></div>
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
+    <script src="{{ url_for('static', filename='js/index.js')}}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-extra-markers@1.13.0/leaflet.extra-markers.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet-extra-markers@1.13.0/css/leaflet.extra-markers.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
-    <script>
-        var map = L.map("map").setView([0, 0], 2);
-        var marker;
-        var landmarkName = "{{ landmark_name }}"; // Replace with actual landmark name from Python
+</head>
 
-        function onMapClick(e) {
-            if (marker) {
-                map.removeLayer(marker);
-            }
+<body>
 
-            marker = L.marker(e.latlng).addTo(map);
-            $("#latitude").val(e.latlng.lat.toFixed(6));
-            $("#longitude").val(e.latlng.lng.toFixed(6));
-            $("#submit-btn").prop("disabled", false).show();
-        }
+    <div id="map"></div>
+    <button id="submit-btn" onclick="calculateScore({{landmark_lat}}, {{landmark_lon}})" disabled>Submit</button>
+    <div id="landmark-info">Looking for: {{landmark_name}}</div>
 
-        map.on("click", onMapClick);
-
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution:
-                'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-            maxZoom: 18,
-        }).addTo(map);
-
-        // Update the landmark info box
-        $("#landmark-info").text("Landmark: " + landmarkName).show();
-
-        // Function to submit location
-        function submitLocation() {
-            var latitude = marker.getLatLng().lat.toFixed(6);
-            var longitude = marker.getLatLng().lng.toFixed(6);
-            var landmark_lat = "{{landmark_lat}}";
-            var landmark_lon = "{{landmark_lon}}";
-
-            var form = new FormData();
-            form.append('latitude', latitude);
-            form.append('longitude', longitude);
-            form.append('landmark_lat', landmark_lat);
-            form.append('landmark_lon', landmark_lon);
-
-            fetch("{{ url_for('index') }}", {
-                method: 'POST',
-                body: form
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // Handle successful response
-                        // You can redirect or show a success message
-                    } else {
-                        // Handle error response
-                        // You can display an error message
-                    }
-                })
-                .catch(error => {
-                    // Handle fetch error
-                    // You can display an error message
-                });
-        }
-
-    </script>
+    <!-- Score Modal -->
+    <div id="score-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="score-text">Score: {{ score }} / 1000</h2>
+            <p>Your score is based on the proximity to the landmark.</p>
+        </div>
+    </div>
 
 </body>
 
