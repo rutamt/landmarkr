@@ -90,9 +90,34 @@
         function submitLocation() {
             var latitude = marker.getLatLng().lat.toFixed(6);
             var longitude = marker.getLatLng().lng.toFixed(6);
-            alert("Submitting location: Lat " + latitude + ", Long " + longitude);
-            // Perform your submission logic here using latitude and longitude
+            var landmark_lat = "{{landmark_lat}}";
+            var landmark_lon = "{{landmark_lon}}";
+
+            var form = new FormData();
+            form.append('latitude', latitude);
+            form.append('longitude', longitude);
+            form.append('landmark_lat', landmark_lat);
+            form.append('landmark_lon', landmark_lon);
+
+            fetch("{{ url_for('index') }}", {
+                method: 'POST',
+                body: form
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Handle successful response
+                        // You can redirect or show a success message
+                    } else {
+                        // Handle error response
+                        // You can display an error message
+                    }
+                })
+                .catch(error => {
+                    // Handle fetch error
+                    // You can display an error message
+                });
         }
+
     </script>
 
 </body>
