@@ -18,17 +18,26 @@ def get_random_landmark():
         landmark_name = landmark[0].strip("'")
         landmark_name = html.unescape(landmark_name)
         endpoint = "https://nominatim.openstreetmap.org/search"
-        params = {"q": landmark_name, "format": "json", "limit": 1}
 
+        params = {"q": landmark_name, "format": "json"}
         response = requests.get(endpoint, params=params)
         data = response.json()
+        sorted_results = sorted(data, key=lambda x: x["importance"], reverse=True)
 
-        if data:
-            landmark_lat = float(data[0]["lat"])
-            landmark_lon = float(data[0]["lon"])
+        if sorted_results:
+            new_data = sorted_results[0]
+        else:
+            bad_params = {"q": landmark_name, "format": "json", "limit": "1"}
+            response = requests.get(endpoint, params=bad_params)
+            new_data = response.json()
+
+        if new_data:
+            print("data: ", data)
+            landmark_lat = float(new_data["lat"])
+            landmark_lon = float(new_data["lon"])
             return landmark_name, landmark_lat, landmark_lon
 
-    return None, None, None
+    return get_random_landmark()
 
 
 @app.route("/", methods=["GET", "POST"])

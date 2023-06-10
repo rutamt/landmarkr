@@ -97,6 +97,16 @@ function calculateScore(lat, lon) {
     const scoreText = document.getElementById('score-text');
     scoreText.textContent = `Score: ${formattedScore} out of 1000`;
 
+    const distanceText = document.getElementById('distance-from-point');
+    const meterDistance = (Math.round((distance * 1000) * 100) / 100);
+
+    distanceText.textContent = `${(Math.round(distance * 100) / 100).toLocaleString("en-US")}KM (${(Math.round((distance * 0.621371) * 100) / 100).toLocaleString("en-US")}Mi) or ${meterDistance.toLocaleString("en-US")}M (${(Math.round((meterDistance * 3.2808) * 100) / 100).toLocaleString("en-US")}ft)`;
+
+    const congratsLine = document.getElementById('congrats-text');
+    if (score >= 750) {
+        congratsLine.textContent = `Great job! Only ${1000 - score} point${1000 - score == 1 ? "" : "s"} from perfection!`
+    }
+
     updateScore(parseInt(formattedScore));
     scoreModal.style.display = 'block';
 
