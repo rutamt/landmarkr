@@ -5,26 +5,30 @@
     <title>Landmarkr</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
     <script src="{{ url_for('static', filename='js/index.js')}}" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-extra-markers@1.13.0/leaflet.extra-markers.min.js"></script>
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/leaflet-extra-markers@1.13.0/css/leaflet.extra-markers.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
+    <div id="total-score">
+    </div>
 
     <div id="map"></div>
     <button id="submit-btn" onclick="calculateScore({{landmark_lat}}, {{landmark_lon}})" disabled>Submit</button>
     <div id="landmark-info">Looking for: {{landmark_name}}</div>
+    <button id="reset-score-btn" onclick="clearScore()">Reset Score</button>
 
     <!-- Score Modal -->
     <div id="score-modal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="score-text">Score: {{ score }} / 1000</h2>
+            <h2 id="score-text"></h2>
             <p>Your score is based on the proximity to the landmark.</p>
+            <div class="btn-container">
+                <button onclick="location.reload()">Next round</button>
+            </div>
         </div>
     </div>
 

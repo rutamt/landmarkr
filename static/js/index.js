@@ -1,5 +1,54 @@
 var map = L.map("map").setView([0, 0], 2);
 var marker;
+var score = localStorage.getItem('score');
+var rounds = localStorage.getItem('rounds');
+var rounds = localStorage.getItem('rounds');
+
+const totalScoreElement = document.getElementById('total-score');
+const totalScore = localStorage.getItem('score');
+
+if (rounds === null) {
+    rounds = 1;
+} else {
+    rounds = parseInt(rounds);
+}
+
+console.log("Rounds", rounds)
+var roundScore = 1000 * rounds;
+console.log("RS ", roundScore);
+
+console.log("Changing totalScore");
+totalScoreElement.textContent = `Total Score: ${totalScore} / ${roundScore}`;
+
+if (score === null) {
+    score = 0;
+} else {
+    score = parseInt(score);
+}
+
+
+// Update and save the score
+function updateScore(newScore) {
+    var currentScore = parseInt(localStorage.getItem('score'));
+    currentScore += newScore;
+    localStorage.setItem('score', currentScore);
+    var currentRounds = parseInt(localStorage.getItem('rounds')) + 1;
+    localStorage.setItem('rounds', currentRounds);
+    console.log("Rounds from US", localStorage.getItem('rounds'))
+    document.getElementById('total-score').textContent = 'Score: ' + currentScore + ' / ' + 1000 * currentRounds;
+}
+
+
+// Clear the score from localStorage
+function clearScore() {
+    score = 0;
+    rounds = 1;
+    document.getElementById('total-score').textContent = 'Score: ' + score + ' / ' + 1000 * rounds;
+    localStorage.setItem('score', score);
+    localStorage.setItem('rounds', rounds);
+    location.reload(); // Reload the page to update the displayed score
+}
+
 
 function onMapClick(e) {
     if (marker) {
@@ -47,6 +96,8 @@ function calculateScore(lat, lon) {
     const scoreModal = document.getElementById('score-modal');
     const scoreText = document.getElementById('score-text');
     scoreText.textContent = `Score: ${formattedScore} out of 1000`;
+
+    updateScore(parseInt(formattedScore));
     scoreModal.style.display = 'block';
 
     var greenIcon = new L.Icon({
@@ -75,32 +126,5 @@ function calculateScore(lat, lon) {
     submitButton.style.display = 'none';
 }
 
-// Function to check if the intro modal should be shown
-function showIntroModal() {
-    const rounds = localStorage.getItem('rounds');
-    if (!rounds) {
-        const introModal = document.getElementById('intro-modal');
-        introModal.style.display = 'block';
-    }
-}
-
-// Function to handle the start button click
-function handleStartButtonClick() {
-    const roundsInput = document.getElementById('rounds-input');
-    const rounds = parseInt(roundsInput.value);
-    localStorage.setItem('rounds', rounds);
-
-    // Close the intro modal
-    const introModal = document.getElementById('intro-modal');
-    introModal.style.display = 'none';
-
-    // Start the game or perform any necessary actions based on the selected number of rounds
-    startGame(rounds);
-}
-
-// Add event listener to the start button
-const startButton = document.getElementById('start-button');
-startButton.addEventListener('click', handleStartButtonClick);
 
 // Call the showIntroModal function to check if the modal should be displayed
-showIntroModal();
