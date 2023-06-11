@@ -75,7 +75,8 @@ body {
 }
 
 #score-modal,
-#final-modal {
+#final-modal,
+#intro-modal {
     display: none;
     position: fixed;
     top: 50%;
@@ -97,7 +98,8 @@ body {
 
 /* Example style for the button */
 #score-modal button,
-#final-modal button {
+#final-modal button,
+#intro-modal button {
     padding: 16px 32px;
     font-size: 18px;
     font-weight: bold;
@@ -113,12 +115,14 @@ body {
 }
 
 #score-modal button:hover,
-#final-modal button:hover {
+#final-modal button:hover,
+#intro-modal button:hover {
     background-color: #3f9243;
 }
 
 #score-modal button:focus,
-#final-modal button:focus {
+#final-modal button:focus,
+#intro-modal button:focus {
     outline: none;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }

@@ -8,14 +8,27 @@ const totalScoreElement = document.getElementById('total-score');
 const totalScore = localStorage.getItem('score');
 const statsElement = document.getElementById('stats');
 
+var finalTextElement = document.getElementById('final-score-text');
+var scoreModal = document.getElementById('final-modal');
+var resetButton = document.getElementById('reset-score-btn');
+const submitButton = document.getElementById('submit-btn');
+const lookingFor = document.getElementById('landmark-info');
+const introModal = document.getElementById('intro-modal');
 
 // console.log("Rounds", rounds)
-var roundScore = 1000 * rounds;
+var roundScore = 1000 * rounds - 1000;
 // console.log("RS ", roundScore);
 const guessAcuracy = (totalScore / roundScore) * 100;
 
 // Filling in the game statistics when page is loaded
 document.addEventListener('DOMContentLoaded', function () {
+    // Handling the intro modal
+    if (score === 0) {
+        introModal.style.display = 'block';
+        resetButton.style.display = 'none';
+        lookingFor.style.display = 'none';
+        map.off('click');
+    }
     // Call the function once the document has finished loading
     statsElement.innerHTML = `<pre>Rounds: ${rounds}\nAverage distance: ${Math.round((distance / rounds) * 100) / 100} Km\nAccuracy: ${Math.round(guessAcuracy * 100) / 100}%</pre>`;
 
@@ -34,7 +47,12 @@ if (isNaN(distance)) {
     distance = parseInt(distance);
 }
 
-
+function startGame() {
+    introModal.style.display = 'none';
+    resetButton.style.display = 'block';
+    lookingFor.style.display = 'block';
+    map.on("click", onMapClick);
+}
 
 console.log("Changing totalScore");
 totalScoreElement.textContent = `Total Score: ${totalScore} / ${roundScore}`;
@@ -52,8 +70,7 @@ function updateScore(newScore, newDistance) {
     currentScore += newScore;
     localStorage.setItem('score', currentScore);
 
-    var currentRounds = parseInt(localStorage.getItem('rounds')) + 1;
-    localStorage.setItem('rounds', currentRounds);
+    var currentRounds = parseInt(localStorage.getItem('rounds'));
 
     var currentDistance = parseInt(localStorage.getItem('distance'));
     currentDistance += newDistance;
@@ -62,13 +79,10 @@ function updateScore(newScore, newDistance) {
 
     console.log("Rounds from US", localStorage.getItem('rounds'))
     document.getElementById('total-score').textContent = 'Score: ' + currentScore + ' / ' + 1000 * currentRounds;
+    localStorage.setItem('rounds', currentRounds + 1);
+
 }
 
-var finalTextElement = document.getElementById('final-score-text');
-var scoreModal = document.getElementById('final-modal');
-var resetButton = document.getElementById('reset-score-btn');
-const submitButton = document.getElementById('submit-btn');
-const lookingFor = document.getElementById('landmark-info');
 
 // Clear the score from localStorage
 function clearScore() {
