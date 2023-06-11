@@ -13,9 +13,13 @@
 </head>
 
 <body>
-    <div id="total-score">
+    <div id="score-container">
+        <div id="total-score" onmouseover="showModal()" onmouseout="hideModal()"></div>
+        <div id="stats-modal">
+            <h3>Statistics</h3>
+            <p id="stats"></p>
+        </div>
     </div>
-
     <div id="map"></div>
     <button id="submit-btn" onclick="calculateScore({{landmark_lat}}, {{landmark_lon}})" disabled>Submit</button>
     <div id="landmark-info">Looking for: {{landmark_name}}</div>
@@ -25,6 +29,8 @@
     <div id="score-modal" class="modal">
         <div class="modal-content">
             <h2 id="score-text"></h2>
+            <img id="landmark-photo" src="{{photo}}">
+            <p>{{summary}}</p>
             <p id="congrats-text">Your score is based on the proximity to the landmark.</p>
             <p id="distance-from-point"></p>
             <div class="btn-container">
@@ -33,6 +39,15 @@
         </div>
     </div>
 
+    <!-- Final score modal -->
+    <div id="final-modal" class="modal">
+        <h2>Final stats: </h2>
+
+        <div class="final-modal-content">
+            <h2 id="final-score-text"></h2>
+            <button onclick="location.reload()">Restart</button>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -11,6 +11,10 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
+pre {
+    font-family: 'Montserrat', sans-serif;
+    padding: auto;
+}
 
 html,
 body {
@@ -70,13 +74,14 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#score-modal {
+#score-modal,
+#final-modal {
     display: none;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.623);
     padding: 20px;
     z-index: 999;
     text-align: center;
@@ -84,13 +89,15 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#score-modal button {
-    margin-top: 20px;
-    /* Adjust the margin-top value as needed */
+#landmark-photo {
+    width: 55%;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Example style for the button */
-#score-modal button {
+#score-modal button,
+#final-modal button {
     padding: 16px 32px;
     font-size: 18px;
     font-weight: bold;
@@ -101,17 +108,25 @@ body {
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease;
+    margin-top: 20px;
+
 }
 
-#score-modal button:hover {
+#score-modal button:hover,
+#final-modal button:hover {
     background-color: #3f9243;
 }
 
-#score-modal button:focus {
+#score-modal button:focus,
+#final-modal button:focus {
     outline: none;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+#final-modal pre {
+    font-size: 80%;
+    font-weight: 200;
+}
 
 #total-score {
     position: absolute;
@@ -123,9 +138,59 @@ body {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     z-index: 999;
+    cursor: pointer;
+
+}
+
+#stats-modal {
+    display: none;
+    position: absolute;
+    top: calc(100% + 55px);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 35px;
+    max-width: 200px;
+    z-index: 999;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#stats-modal pre {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+#stats-modal pre:before {
+    content: "";
+    flex-grow: 1;
+}
+
+#stats-modal pre code {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 
+
+
+
+#score-container {
+    position: relative;
+}
+
+#stats-modal.active {
+    display: block;
+    opacity: 1;
+    /* Set opacity to 1 to make the modal visible */
+}
 
 /* reset button */
 #reset-score-btn {
